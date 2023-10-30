@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Gyroscope } from "expo";
+
+import { Gyroscope } from 'expo-sensors';
+
 import Chart from "./Chart";
 import * as Location from 'expo-location';
 const App = () => {
@@ -34,6 +36,25 @@ const App = () => {
       gyroSubscription.remove();
     };
   });
+  // useEffect(() => {
+  //   const startListening = async () => {
+  //     if (await Gyroscope.isAvailableAsync()) {
+  //       const gyroSubscription = Gyroscope.addListener((data) => {
+  //         console.log(data);
+  //         setGyroData(data);
+  //       });
+  
+  //       return () => {
+  //         gyroSubscription.remove();
+  //       };
+  //     } else {
+  //       console.log('Gyroscope is not available on this device.');
+  //     }
+  //   };
+  
+  //   startListening();
+  // }, []);
+  
 
   // Plot the change in values and the current location in a graph.
   const labels = [];
