@@ -1,51 +1,30 @@
 import React from 'react';
-import { Chart } from 'react-native-charts-wrapper';
+import { Line } from 'react-native-svg';
 
-const LineChart = ({ gyroData, locationData }) => {
-  const labels = [];
-  const gyroDataValues = [];
-  const locationDataValues = [];
-
-  for (let i = 0; i < gyroData.length; i++) {
-    labels.push(i.toString());
-    gyroDataValues.push(gyroData[i].x);
-    locationDataValues.push(locationData[i].latitude);
-  }
-
-  const datasets = [
-    {
-      data: gyroDataValues,
-      label: 'Gyroscopic change in values',
-      config: {
-        lineWidth: 2,
-        color: '#FF0000',
-      },
-    },
-    {
-      data: locationDataValues,
-      label: 'Current location',
-      config: {
-        lineWidth: 2,
-        color: '#0000FF',
-      },
-    },
-  ];
-
-  return (
-    <Chart
-      type="line"
-      data={{
-        labels,
-        datasets,
-      }}
-      options={{
-        legend: {
-          display: true,
-          position: 'top',
-        },
-      }}
+const gyroDataLine  = ({ labels, datasets }) =>{
+  return datasets[0].data.map((value, index) => (
+    <Line
+      key={index}
+      x1={0}
+      y1={0}
+      x2={labels.length - 1}
+      y2={datasets[0].data[labels.length - 1]}
+      stroke={styles.line.stroke}
+      strokeWidth={styles.line.strokeWidth}
     />
-  );
+  ));
 };
 
-export default LineChart;
+const locationDataLine = ({ labels, datasets }) => {
+  return datasets[1].data.map((value, index) => (
+    <Line
+      key={index}
+      x1={0}
+      y1={0}
+      x2={labels.length - 1}
+      y2={datasets[1].data[labels.length - 1]}
+      stroke={styles.circle.fill}
+      strokeWidth={styles.line.strokeWidth}
+    />
+  ));
+};

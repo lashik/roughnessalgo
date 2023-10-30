@@ -67,18 +67,7 @@ const App = () => {
 
   return (
     <View style={{ flex: 1 }}>
-        <Chart
-          type="line"
-          data={{
-            labels,
-            datasets,
-          }}
-          options={{
-            legend: {
-              display: true,
-              position: "top",
-            },
-          }}
+        <Chart labels={labels} datasets={datasets}
         />
         <Text>Permission to access the gyroscope and location sensors is required.</Text>
       

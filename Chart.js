@@ -1,72 +1,55 @@
-import React from "react";
-import { Svg, Line, Circle } from "react-native-svg";
-import {StyleSheet } from 'react-native';
-const Chart = ({ labels, datasets }) => {
-  const styles = StyleSheet.create({
-    svg: {
-      width: "100%",
-      height: "100%",
-    },
-    line: {
-      strokeWidth: 2,
-      stroke: "#FF0000",
-    },
-    circle: {
-      r: 5,
-      fill: "#0000FF",
-    },
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+
+const Chart = ({ datasets, labels }) => {
+  const [chartData, setChartData] = useState({
+    datasets: datasets,
+    labels: labels,
   });
+  const screenWidth = Dimensions.get('window').width; // get device screen width
+  const screenHeight = Dimensions.get('window').height; // get device screen height
 
-  const gyroDataLine = (
-    <Line
-      x1={0}
-      y1={0}
-      x2={labels.length() - 1}
-      y2={datasets[0].data[labels.length() - 1]}
-      stroke={styles.line.stroke}
-      strokeWidth={styles.line.strokeWidth}
-    />
-  );
-
-  const locationDataLine = (
-    <Line
-      x1={0}
-      y1={0}
-      x2={labels.length - 1}
-      y2={datasets[1].data[labels.length - 1]}
-      stroke={styles.circle.fill}
-      strokeWidth={styles.line.strokeWidth}
-    />
-  );
-
-  const gyroDataPoints = datasets[0].data.map((value, index) => (
-    <Circle
-      key={index}
-      cx={index}
-      cy={value}
-      r={styles.circle.r}
-      fill={styles.circle.fill}
-    />
-  ));
-
-  const locationDataPoints = datasets[1].data.map((value, index) => (
-    <Circle
-      key={index}
-      cx={index}
-      cy={value}
-      r={styles.circle.r}
-      fill={styles.circle.fill}
-    />
-  ));
+  const handleChartDataUpdate = (newDatasets) => {
+    setChartData({
+      datasets: newDatasets,
+      labels: labels,
+    });
+  };
 
   return (
-    <Svg style={styles.svg}>
-      {gyroDataLine}
-      {locationDataLine}
-      {gyroDataPoints}
-      {locationDataPoints}
-    </Svg>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>My Chart</Text>
+      <LineChart
+        data={chartData}
+        width={screenWidth - 5}
+        height={screenHeight * 0.5} // set chart height to half of the screen height
+        yAxisLabel="$"
+        chartConfig={{
+          backgroundColor: 'transparent',
+          strokeWidth: 2,
+          barPercentage: 0.5,
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
+      />
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+});
 
 export default Chart;
