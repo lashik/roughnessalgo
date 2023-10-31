@@ -24,24 +24,26 @@ const App = () => {
     })();
   }, []);
 
-  // Plot the change in values and the current location in a graph.
   const labels = [];
   const gyroDataValues = [];
   const locationDataValues = [];
 
   useEffect(() => {
-    // Subscribe to the gyroscope sensor for updates.
     const gyroSubscription = Gyroscope.addListener((data) => {
       setGyroData(() => ({
         x: parseFloat(data.x.toFixed(3)),
         y: parseFloat(data.y.toFixed(3)),
-        z: parseFloat(data.z.toFixed(3))
+        z: parseFloat(data.z.toFixed(3)) * 0.01 > 0.001 ? parseFloat(data.z.toFixed(3)) : 0
       }));
-      
     });
+  
+    const interval = setInterval(() => {
+      gyroSubscription();
+    }, 5000);
 
     return () => {
       gyroSubscription.remove();
+      clearInterval(interval);
     };
   }, []);
 console.log(gyroData);
