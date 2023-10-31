@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-
 import { Gyroscope } from 'expo-sensors';
-
 import Chart from "./Chart";
 import * as Location from 'expo-location';
 
@@ -29,27 +27,37 @@ const App = () => {
   const locationDataValues = [];
 
   useEffect(() => {
-    const gyroSubscription = Gyroscope.addListener((data) => {
+    let gyroSubscription;
+
+    const updateGyroData = (data) => {
       setGyroData(() => ({
         x: parseFloat(data.x.toFixed(3)),
         y: parseFloat(data.y.toFixed(3)),
         z: parseFloat(data.z.toFixed(3)) * 0.01 > 0.001 ? parseFloat(data.z.toFixed(3)) : 0
       }));
-    });
-  
+    };
+
+    const updateGyroSubscription = () => {
+      gyroSubscription = Gyroscope.addListener(updateGyroData);
+    };
+
+    updateGyroSubscription(); // Initial subscription
+
     const interval = setInterval(() => {
-      gyroSubscription();
+      gyroSubscription.remove(); // Remove the current subscription
+      updateGyroSubscription(); // Create a new subscription
+      console.log("im work");
     }, 5000);
 
     return () => {
-      gyroSubscription.remove();
+      gyroSubscription.remove(); // Clean up the subscription
       clearInterval(interval);
     };
   }, []);
-console.log(gyroData);
-  // Add gyroscope data to the arrays and plot the graph.
+
   labels.push(new Date().toLocaleTimeString());
-  
+
+console.log(gyroData);
 
   const datasets = [
     {
@@ -60,8 +68,8 @@ console.log(gyroData);
           return true;
         } else {
           return false;
-      }
-    }),
+        }
+      }),
       label: "Gyroscopic change in values",
       config: {
         lineWidth: 2,
@@ -80,7 +88,7 @@ console.log(gyroData);
 
   return (
     <View style={{ flex: 1 }}>
-      <Chart labels={labels} datasets={datasets} />
+      {/* <Chart labels={labels} datasets={datasets} /> */}
       <Text>Permission to access the gyroscope and location sensors is required.</Text>
     </View>
   );
