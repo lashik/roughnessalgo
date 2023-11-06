@@ -3,7 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { Gyroscope } from 'expo-sensors';
 import Chart from "./Chart";
 import * as Location from 'expo-location';
-
+import { ScatterChart } from "react-native-charts-wrapper";
+import {Scatter} from './LineChart';
 const App = () => {
   const [gyroData, setGyroData] = useState({ x: 0, y: 0, z: 0 });
   const [locationData, setLocationData] = useState({ latitude: 0, longitude: 0 });
@@ -88,7 +89,7 @@ console.log(gyroData);
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <Chart labels={labels} datasets={datasets} /> */}
+       <Scatter labels={labels} datasets={datasets} /> 
       <Text>Permission to access the gyroscope and location sensors is required.</Text>
     </View>
   );
