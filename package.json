@@ -11,6 +11,7 @@
   "dependencies": {
     "chart.js": "^4.4.0",
     "expo": "^49.0.16",
+    "expo-crypto": "~12.4.1",
     "expo-location": "~16.1.0",
     "expo-sensors": "~12.3.0",
     "expo-splash-screen": "^0.10.3",
@@ -22,8 +23,7 @@
     "react-native-chart-kit": "^6.12.0",
     "react-native-charts-wrapper": "^0.6.0",
     "react-native-sensors": "^7.3.6",
-    "react-native-svg": "13.9.0",
-    "expo-crypto": "~12.4.1"
+    "react-native-svg": "13.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

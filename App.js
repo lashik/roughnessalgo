@@ -3,9 +3,23 @@ import { View, Text, StyleSheet } from "react-native";
 import { Gyroscope } from 'expo-sensors';
 import Chart from "./Chart";
 import * as Location from 'expo-location';
-import { ScatterChart } from "react-native-charts-wrapper";
-import {Scatter} from './LineChart';
+import {
+  Chart as ChartJS,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Scatter } from 'react-chartjs-2';
+
+
+
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+
+
 const App = () => {
+  
   const [gyroData, setGyroData] = useState({ x: 0, y: 0, z: 0 });
   const [locationData, setLocationData] = useState({ latitude: 0, longitude: 0 });
 
@@ -86,10 +100,31 @@ console.log(gyroData);
       },
     },
   ];
+   const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+  const i =0;
+
+   const data = {
+    datasets: [
+      {
+        label: 'A dataset',
+        data: Array.from({ length: 100 }, () => ({
+          x: Math.random() * 200 - 100, // Random number between -100 and 100
+          y: Math.random() * 200 - 100, // Random number between -100 and 100
+        })),
+        backgroundColor: 'rgba(255, 99, 132, 1)',
+      },
+    ],
+  };
 
   return (
     <View style={{ flex: 1 }}>
-       <Scatter labels={labels} datasets={datasets} /> 
+       <Scatter options={options} data={data} />
       <Text>Permission to access the gyroscope and location sensors is required.</Text>
     </View>
   );
